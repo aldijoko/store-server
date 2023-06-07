@@ -1,0 +1,64 @@
+<table id="tableVoucher" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+      <th>No.</th>
+      <th>Nama Game</th>
+      <th>Item</th>
+      <th>Total Harga</th>
+      <th>Status</th>
+      <th>Nama Player</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < transactionData.length; i++) { %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td>
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <img width="48px" height="48px" src="http://localhost:3000/uploads/<%= transactionData[i]?.historyVoucherTopup?.thumbnail %>" alt="thumbnail">
+                </li>
+            </ul>
+            <%= transactionData[i]?.historyVoucherTopup?.gameName %>
+            <br>
+            <%= transactionData[i]?.historyVoucherTopup?.category %>
+          </td>
+            <td>
+                <%= transactionData[i]?.historyVoucherTopup?.coinName %>
+                <%= transactionData[i]?.historyVoucherTopup?.coinQuantity %>
+            </td>
+            <td>
+                <%= transactionData[i]?.value %>
+            </td>
+            <td>
+                <% if(transactionData[i].status === 'pending') { %>
+                  <span class="badge badge-warning"><%= transactionData[i].status %></span>
+                <% } else if(transactionData[i].status === 'success') { %>
+                    <span class="badge badge-success"><%= transactionData[i].status %></span>
+                <% } else { %>
+                    <span class="badge badge-danger"><%= transactionData[i].status %></span>
+                <% } %>
+            </td>
+            <td>
+                <%= transactionData[i].player?.name ?? '-' %>
+            </td>
+          <td>
+            <% if(transactionData[i].status === 'pending'){ %>
+            <form style="display: inline-block;" action="/transaction/status/<%= transactionData[i]._id %>?status=success&_method=PUT" method="post">
+              <button class="btn btn-info btn-sm">
+                <i class="fas fa-check"></i>
+                Accept</button>
+            </form>
+            <form style="display: inline-block;" action="/transaction/status/<%= transactionData[i]._id %>?status=failed&_method=PUT" method="post">
+              
+                <button class="btn btn-danger btn-sm">
+                  <i class="fas fa-times-circle"></i>
+                  Delete</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>

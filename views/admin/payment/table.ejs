@@ -1,0 +1,51 @@
+<table id="tableVoucher" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+      <th>No.</th>
+      <th>Tipe Pembayaran</th>
+      <th>Bank</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < paymentData.length; i++) { %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= paymentData[i].type %></td>
+          <td>
+            <% paymentData[i].banks.forEach(bank => { %>
+              <span class="badge badge-primary"><%= bank.name %>-<%= bank.nameBank %>-<%= bank.noRekening %></span>
+            <% }) %>
+          </td>
+          <td>
+            <% if(paymentData[i].status === 'Y') { %>
+              <span class="badge badge-primary">Aktif</span>
+            <% } else { %>
+                <span class="badge badge-danger">Tidak Aktif</span>
+            <% } %>
+        </td>
+        <td>
+          <form action="/payment/status/<%= paymentData[i]._id %>?_method=PUT" method="post" style="display: inline-block;">
+              <button class="btn btn-success btn-sm">
+                  <% if(paymentData[i].status === 'active') { %>
+                        Turn Off
+                  <% } else { %>
+                        Turn On
+                  <% } %>
+              </button>
+              <a href="/payment/edit/<%= paymentData[i]._id %>" class="btn btn-warning btn-sm">
+                  <i class="fas fa-pencil-alt"></i>
+              Edit</a>
+          </form>
+          <form style="display: inline-block;" action="/payment/delete/<%= paymentData[i]._id %>?_method=DELETE" method="post">
+            
+            <button class="btn btn-danger btn-sm">
+              <i class="fas fa-trash"></i>
+              Delete</button>
+          </form>
+        </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>

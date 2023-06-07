@@ -1,0 +1,53 @@
+<table id="tableVoucher" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+      <th>No.</th>
+      <th>Nama Game</th>
+      <th>Category</th>
+      <th>Nominal</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < voucherData.length; i++) { %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= voucherData[i].name %></td>
+            <td><%= voucherData[i].category?.name ?? '-' %></td>
+            <td>
+              <% voucherData[i].nominals.forEach(nominal => { %>
+                <span class="badge badge-primary"><%= nominal.coinName %> <%= nominal.coinQuantity %></span>
+              <% }) %>
+            </td>
+            <td>
+                <% if(voucherData[i].status === 'active') { %>
+                  <span class="badge badge-primary">Aktif</span>
+                <% } else { %>
+                    <span class="badge badge-danger">Tidak Aktif</span>
+                <% } %>
+            </td>
+          <td>
+            <form action="/voucher/status/<%= voucherData[i]._id %>?_method=PUT" method="post" style="display: inline-block;">
+                <button class="btn btn-success btn-sm">
+                    <% if(voucherData[i].status === 'active') { %>
+                          Turn Off
+                    <% } else { %>
+                          Turn On
+                    <% } %>
+                </button>
+                <a href="/voucher/edit/<%= voucherData[i]._id %>" class="btn btn-warning btn-sm">
+                    <i class="fas fa-pencil-alt"></i>
+                Edit</a>
+            </form>
+            <form style="display: inline-block;" action="/voucher/delete/<%= voucherData[i]._id %>?_method=DELETE" method="post">
+              
+              <button class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i>
+                Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
